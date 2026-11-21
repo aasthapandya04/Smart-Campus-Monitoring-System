@@ -1,0 +1,13 @@
+# Readings and LED state are created by the server at runtime - do not commit them
+server/data/
+
+# Editor / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Arduino build output
+build/
+*.elf
+*.bin
