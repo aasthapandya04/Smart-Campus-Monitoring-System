@@ -1,14 +1,37 @@
-# 💧 Smart Campus Monitoring System
+<h1 align="center">💧 Smart Campus Monitoring System 🏫</h1>
 
-**Team Mavericks** 🚀 · ESP32 · ESP-NOW · Wi-Fi · XAMPP (Apache + PHP)
+<p align="center">
+  <b>🪣 A two-node ESP32 IoT system that watches a water tank and the room around it, 🚨 alarms on the spot and 🖥️ reports to a live web dashboard.</b>
+</p>
 
-A two-node IoT system that watches a water tank 🪣 and the room around it. A **master ESP32** measures
-temperature 🌡️, humidity 💦 and water level 📏, shows them on an LCD, raises a local alarm 🚨 and uploads
-everything to a live web dashboard 🖥️. A **slave ESP32** adds a second ultrasonic distance reading and
-sends it to the master wirelessly over ESP-NOW 📡. The dashboard runs on a laptop with XAMPP and needs
-**no database** - readings are stored in a plain text file 📄.
+<p align="center">
+<img src="https://img.shields.io/badge/BOARD-ESP32%20x2-e2231a?style=for-the-badge&labelColor=0f1b3d" alt="BOARD ESP32 x2"> <img src="https://img.shields.io/badge/LINK-ESP--NOW-0b7a5c?style=for-the-badge&labelColor=0f1b3d" alt="LINK ESP-NOW"> <img src="https://img.shields.io/badge/SERVER-XAMPP%20and%20PHP-2a3a8c?style=for-the-badge&labelColor=0f1b3d" alt="SERVER XAMPP and PHP"> <img src="https://img.shields.io/badge/DATABASE-NONE-f5b400?style=for-the-badge&labelColor=0f1b3d" alt="DATABASE NONE">
+<br>
+<img src="https://img.shields.io/badge/ALARM-UNDER%208%20CM-c8102e?style=for-the-badge&labelColor=0f1b3d" alt="ALARM UNDER 8 CM"> <img src="https://img.shields.io/badge/DASHBOARD-LIVE%20EVERY%205%20S-0b7a5c?style=for-the-badge&labelColor=0f1b3d" alt="DASHBOARD LIVE EVERY 5 S"> <img src="https://img.shields.io/badge/POWER-USB-2a3a8c?style=for-the-badge&labelColor=0f1b3d" alt="POWER USB">
+</p>
 
-![Complete setup: laptop dashboard, master node and slave node](docs/images/full-setup.jpg)
+<p align="center">
+  🚀 <b>Team Mavericks</b> &middot; 👑 Rishi Rena (team leader) &middot; 🔌 Aastha Pandya &middot; 🖥️ Revansh Jain
+</p>
+
+<p align="center">
+  <a href="#-3-system-architecture">🧩 Architecture</a> &middot;
+  <a href="#-4-hardware">🔧 Hardware</a> &middot;
+  <a href="#-5-how-the-firmware-works">🧠 Firmware</a> &middot;
+  <a href="#-6-how-the-server-works">🌐 Server</a> &middot;
+  <a href="#-7-results">📊 Results</a> &middot;
+  <a href="#-8-installation-and-setup">🚀 Setup</a>
+</p>
+
+<p align="center">
+  <img src="Images/full-setup.jpg" alt="Complete setup: laptop dashboard, master node and slave node" width="90%">
+</p>
+
+> [!NOTE]
+> 💡 A **master ESP32** measures temperature, humidity and water level, shows them on an LCD, raises a local alarm
+> (red LED and buzzer) and uploads everything to a live dashboard. A **slave ESP32** adds a second ultrasonic
+> distance reading and sends it to the master wirelessly over ESP-NOW. The dashboard runs on a laptop with XAMPP
+> and needs **no database**: readings are stored in a plain text file.
 
 ---
 
@@ -55,7 +78,7 @@ empty tank, so `water level = 30 cm - measured distance`.
 - 📡 Wireless master-slave link with ESP-NOW (no router needed between the two boards)
 - 🎯 Sensor filtering (median of 5 samples plus smoothing) so the readings do not jump around
 - 🔁 Fault tolerant: the master keeps working and retries if Wi-Fi or the server goes down
-- 🗂️ No database: data lives in text files inside `server/data/`
+- 🗂️ No database: data lives in text files inside `data/`
 
 ## 🧩 3. System architecture
 
@@ -132,18 +155,31 @@ flowchart LR
 | Ultrasonic ECHO | 18 |
 | LED | 4 |
 
-**⚠️ Wiring notes**
-- The HC-SR04 runs on 5 V and its ECHO pin outputs 5 V, but ESP32 pins tolerate only 3.3 V. Put a
-  **voltage divider** (for example 1 kOhm + 2 kOhm) on each ECHO line. The two resistors are visible next to the
-  sensor connector in the photos below.
-- If the LCD stays blank, change the address in `master.ino` from `0x27` to `0x3F`.
-- If the buzzer or LEDs behave backwards, swap `HIGH` and `LOW` in the `BUZZER_ON`, `LED_ON` definitions.
+> [!IMPORTANT]
+> ⚡ The HC-SR04 runs on 5 V and its ECHO pin outputs 5 V, but ESP32 pins tolerate only 3.3 V. Put a
+> **voltage divider** (for example 1 kOhm + 2 kOhm) on each ECHO line. The two resistors are visible next to the
+> sensor connector in the photos below.
+
+> [!TIP]
+> 🛠️ If the LCD stays blank, change the address in `master.ino` from `0x27` to `0x3F`. If the buzzer or LEDs
+> behave backwards, swap `HIGH` and `LOW` in the `BUZZER_ON` and `LED_ON` definitions.
 
 ### 📸 Photos
 
-| Master node 🎛️ | Slave node 📡 |
-|---|---|
-| ![Master node with LCD, DHT22, LEDs, buzzer and button](docs/images/master-node.jpg) | ![Slave node with ESP32, ultrasonic sensor and LED](docs/images/slave-node.jpg) |
+<table align="center">
+  <tr>
+    <th align="center">🎛️ Master node</th>
+    <th align="center">📡 Slave node</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="Images/master-node.jpg" alt="Master node with LCD, DHT22, LEDs, buzzer and button" width="100%"></td>
+    <td align="center"><img src="Images/slave-node.jpg" alt="Slave node with ESP32, ultrasonic sensor and LED" width="100%"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>LCD, DHT22, LEDs, buzzer, button and ultrasonic sensor</sub></td>
+    <td align="center"><sub>ESP32, ultrasonic sensor and indicator LED</sub></td>
+  </tr>
+</table>
 
 The master LCD in the photo shows `T:29.5C H:32%` on the first row and `M:13.6cm S:30.0` on the second
 (master distance and slave distance). The green LED is on because the water is not in the alert zone.
@@ -288,7 +324,7 @@ flowchart TD
 
 ## 🌐 6. How the server works
 
-The whole server is **one file**, `server/index.php`, running on XAMPP's Apache. No MySQL is used.
+The whole server is **one file**, `index.php`, running on XAMPP's Apache. No MySQL is used.
 
 ### 🗄️ 6.1 Storage
 
@@ -386,14 +422,16 @@ sequenceDiagram
 
 - 🔑 Only devices that know the API key can upload data or change LED state from the master.
 - 🛡️ `.htaccess` blocks direct browser access to the `.txt` data files and turns off folder listing.
-- ⚠️ The Wi-Fi password and API key are written in the code. Change them to your own values before making the
-  repository public, or keep the repository private.
+- ⚠️ The Wi-Fi password and API key are written in the code. Replace them with placeholders before the
+  repository is public.
 - 🚧 The dashboard LED buttons have no login. This is fine inside a private hotspot for a demo; before any
   wider use, add authentication and HTTPS.
 
 ## 📊 7. Results
 
-![Live dashboard showing the five sensor values and the last 10 saved entries](docs/images/dashboard.jpg)
+<p align="center">
+  <img src="Images/dashboard.jpg" alt="Live dashboard showing the five sensor values and the last 10 saved entries" width="90%">
+</p>
 
 ✅ The photo shows the system running end to end: the master is **ONLINE** (last data 4 seconds ago), and
 the five boxes show 29.6 C, 32.6 %, a water level of 16.3 cm, a master distance of 13.7 cm and a slave
@@ -410,7 +448,7 @@ removed the distance returns to about 30 cm and the water level to about 0 cm. E
 ### 💻 8.1 Server (laptop)
 
 1. Install **XAMPP** and start **Apache** (MySQL is not needed).
-2. Copy `server/index.php` and `server/.htaccess` to
+2. Copy `index.php` and `.htaccess` to
    `C:\xampp\htdocs\student-sites\team13\`
 3. Turn on the Windows **Mobile Hotspot** and use the same network name and password as `WIFI_NAME` and
    `WIFI_PASS` in both sketches. The laptop address on the hotspot is `192.168.137.1`.
@@ -422,7 +460,7 @@ removed the distance returns to about 30 cm and the water level to about 0 cm. E
 1. Install the **ESP32** board package.
 2. Install libraries from the Library Manager: *DHT sensor library* (Adafruit), *Adafruit Unified Sensor*,
    *LiquidCrystal I2C*.
-3. Open `firmware/master/master.ino` and check these settings:
+3. Open `master.ino` (in the Arduino IDE the sketch must sit in a folder named `master`) and check these settings:
 
    | Setting | Value |
    |---|---|
@@ -432,7 +470,7 @@ removed the distance returns to about 30 cm and the water level to about 0 cm. E
    | `API_KEY` | `Campus123` (must equal `$API_KEY` in `index.php`) |
 
 4. Select your ESP32 board and port, then upload.
-5. Open `firmware/slave/slave.ino`, set the same `WIFI_NAME` and `WIFI_PASS`, then upload.
+5. Open `slave.ino` (folder named `slave`), set the same `WIFI_NAME` and `WIFI_PASS`, then upload.
 6. Open the Serial Monitor at **115200** baud on the master. You should see
    `Sent to dashboard, response: 200` every 5 seconds. ✅
 
@@ -478,20 +516,21 @@ Sending the same request with a wrong key should return `Wrong API key`.
 ## 📁 11. Repository structure
 
 ```
-smart-campus-monitoring/
+Smart-Campus-Monitoring-System/
 ├── README.md
 ├── .gitignore
-├── docs/
-│   └── images/               Photos used in this README
-├── firmware/
-│   ├── master/master.ino     Master ESP32: sensors, LCD, alarm, button, Wi-Fi upload
-│   └── slave/slave.ino       Slave ESP32: ultrasonic, LED, ESP-NOW
-└── server/
-    ├── index.php             Dashboard and API in one file
-    └── .htaccess             Blocks direct access to the data files
+├── .htaccess                 Blocks direct access to the data files
+├── index.php                 Server: dashboard and API in one file
+├── master.ino                Master ESP32: sensors, LCD, alarm, button, Wi-Fi upload
+├── slave.ino                 Slave ESP32: ultrasonic, LED, ESP-NOW
+└── Images/                   Photos used in this README
+    ├── full-setup.jpg
+    ├── master-node.jpg
+    ├── slave-node.jpg
+    └── dashboard.jpg
 ```
 
-`server/data/` is created at run time and is ignored by Git.
+`data/` is created at run time and is ignored by Git.
 
 ## 💡 12. Possible improvements
 
@@ -504,14 +543,16 @@ smart-campus-monitoring/
 
 ## 👥 13. Team
 
-**Team Mavericks** 🚀 (project folder `team13`)
+<p align="center">
+  <b>🚀 Team Mavericks</b> (project folder <code>team13</code>)
+</p>
 
 | | Name | Role | Responsibilities |
 |---|---|---|---|
-| 👑 | **Rishi Rena** | Team Leader and Embedded Hardware Designer | Led the team and planned the project. Designed the embedded hardware: circuit design and wiring of the master and slave nodes. |
-| 🔌 | **Aastha Pandya** | Hardware and Firmware (Arduino IDE) Developer | Built and tested the hardware. Wrote and uploaded the ESP32 firmware for the master and slave in the Arduino IDE. |
-| 🖥️ | **Revansh Jain** | Server and Dashboard Developer | Built the XAMPP / PHP server: the API, data storage and the live dashboard. |
+| 👑 | **Rishi Rena** | Team Leader and Embedded Hardware Designer | 🧭 Led the team, planned the project and kept the work on schedule. 🔧 Designed the embedded hardware: circuit design and wiring of the master and slave nodes. |
+| 🔌 | **Aastha Pandya** | Hardware and Firmware (Arduino IDE) Developer | 🛠️ Built and tested the hardware on the board. 💻 Wrote, debugged and uploaded the ESP32 firmware for the master and slave in the Arduino IDE. |
+| 🖥️ | **Revansh Jain** | Server and Dashboard Developer | 🌐 Built the XAMPP / PHP server: the API, data storage and the live dashboard, and connected it to the master node over Wi-Fi. |
 
 ---
 
-Made with ❤️ by Team Mavericks
+<p align="center">Made with ❤️ by <b>Team Mavericks</b> 🚀</p>
